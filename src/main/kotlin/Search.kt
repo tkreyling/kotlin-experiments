@@ -11,7 +11,7 @@ data class DistanceAndLocation(val location: Location, val distance: Double?)
 
 fun search(query: Query, locations: List<Location>): List<DistanceAndLocation> {
     return locations
-            .filter { it.ownerId == query.ownerId }
+            .filter { if (query.ownerId == null) true else it.ownerId == query.ownerId }
             .map { DistanceAndLocation(it, distance(point(it.address.lat, it.address.long), point(query.lat, query.long))) }
             .filter {
                 if (query.maxDistance != null && it.distance != null) it.distance < query.maxDistance
